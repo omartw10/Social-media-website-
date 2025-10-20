@@ -45,6 +45,11 @@ function startUp(reload = true, page = 1) {
         
         let user = getCurrentUser();
         let isMyPost = user != null && post.author.id == user.id ;
+        let profileImage =
+        (typeof post.author["profile_image"] === "string" && post.author["profile_image"]) ||
+        (post.author["profile_image"] && typeof post.author["profile_image"] === "object" && post.author["profile_image"].url) ||
+        "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=";
+        
         let editBtnContent = ``;
         let deletePost = ``;
 
@@ -71,10 +76,7 @@ function startUp(reload = true, page = 1) {
         }
 
 
-        let profileImage =
-        (typeof post.author["profile_image"] === "string" && post.author["profile_image"]) ||
-        (post.author["profile_image"] && typeof post.author["profile_image"] === "object" && post.author["profile_image"].url) ||
-        "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=";
+        
 
         const rawPostImage = post.image ?? post.post_image ?? post.media ?? null;
 
@@ -85,9 +87,10 @@ function startUp(reload = true, page = 1) {
         let content = `
           <div class="card shadow mb-5 bg-body-tertiary rounded">
               <div class="card-header">
-                  <img src="${profileImage}" class="rounded-circle border border-2" style="width: 40px; height: 40px;">
-                  <h7 style="margin-left: 5px;"><b>${post.author.username ?? "no user"}</b></h7>
-
+                  <span style="cursor: pointer;" onclick="userClicked()">
+                    <img src="${profileImage}" class="rounded-circle border border-2" style="width: 40px; height: 40px;">
+                    <h7 style="margin-left: 5px;"><b>${post.author.username ?? "no user"}</b></h7>
+                  </span>
                   ${deletePost}
                   ${editBtnContent}
                  
@@ -139,87 +142,6 @@ function postClicked(postId){
     window.location=`file:///D:/Website%20projects/course/Final%20project/postDetails.html?postId=${postId}`;
 }
 
-function createNewPostClicked(){
-
-  let postId = document.getElementById("post-id-input").value;
-  let isCreate = postId == null || postId =="";
-  
-    
-
-  let token = localStorage.getItem("token");
-  let title = document.getElementById("title-input").value;
-  let body = document.getElementById("body-input").value;
-  let image = document.getElementById("image-input").files[0];
-  let alertMessage = ""
-  
-  
-  const bodyFormData = new FormData();
-  bodyFormData.append("title", title);
-  bodyFormData.append("body", body);
-
-  if(image){
-    bodyFormData.append("image", image, "mu_image.jpg");
-  }
-  
-
-  if(isCreate){
-    url = `${baseUrl}/posts`
-    alertMessage="Post Created Successfully!"
-  }else {
-    url=`https://tarmeezacademy.com/api/v1/posts/${postId}`
-    document.getElementById("post-id-input").value="";    
-    bodyFormData.append("_method","put")
-    alertMessage="Post Updated Successfully!"
-  }
-    
-
-      axios({
-        method:"post",
-        url:url,
-        data:bodyFormData,
-        headers:{
-          "Authorization":`Bearer ${token}`
-        }
-      })
-      .then((response)=>{
-
-        const modal = document.getElementById("create-post-modal");
-        const modalInstance = bootstrap.Modal.getInstance(modal);
-        modalInstance.hide();
-        startUp()
-        showAlert(alertMessage,"success" , 3000)
-
-      }).catch((error)=>{
-        if(isCreate){
-          errorMessage = error.response.data.message;
-          showAlert(errorMessage,"danger",4000);
-        }else{
-          errorMessage = error.response.data.error_message;
-          showAlert(errorMessage,"danger",4000);
-        }
-          
-        })
-    
-    
-  } 
-    
-
-
-
-function editPostBtnClicked(postObj){
-  let post = JSON.parse(decodeURIComponent(postObj))
-
-  document.getElementById("image-container").style.visibility="hidden"
-  document.getElementById("post-id-input").value = post.id;
-  document.getElementById("post-modal.title").innerHTML = "Edit Post"
-  document.getElementById("create-edit-btn").innerHTML = "Update"
-  document.getElementById("title-input").value = post.title;
-  document.getElementById("body-input").value = post.body;
-
-  let postModal = new bootstrap.Modal(document.getElementById("create-post-modal"),{})
-  postModal.toggle()
-}
-
 function addBtnClicked() {
 
   document.getElementById("image-container").style.visibility="visible"
@@ -231,40 +153,13 @@ function addBtnClicked() {
 
   let postModal = new bootstrap.Modal(document.getElementById("create-post-modal"),{})
   postModal.toggle()
-}
-
-function deletePostBtnClicked(postObj){
-  let post = JSON.parse(decodeURIComponent(postObj))
-  document.getElementById("post-id-input").value = post.id;
-  let submitMessage = ``;
-  let postModal = new bootstrap.Modal(document.getElementById("deleteModal"),{})
-  postModal.toggle()
 
 }
 
-function deletePostSubmitBtnClicked(){
-  let postId = document.getElementById("post-id-input").value;
-  let token = localStorage.getItem("token");
-  axios.post(`${baseUrl}/posts/${postId}`,{
-    "_method": "delete"
-  },{
-    headers:{
-      "authorization":`Bearer ${token}`,
-      
-    }
-  }).then((response)=>{
-    const modal = document.getElementById("deleteModal");
-    const modalInstance = bootstrap.Modal.getInstance(modal);
-    modalInstance.hide();
-    startUp()
-
-    showAlert("Post Deleted successfully","success",3000)
-  }).catch((error)=>{
-    
-    showAlert("Login Or register ","danger")
-  })
-
+function userClicked(){
+  window.location=`./profile.html`;
 }
+
 
 
 
