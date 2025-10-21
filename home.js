@@ -4,6 +4,9 @@ let lastPage = 1;
 let isLoading = false;
 let lastScrollHeight = 0; 
 
+const urlParams = new URLSearchParams(window.location.search);
+const id = urlParams.get("postId");
+
 document.getElementById("posts").innerHTML = "";
 setupUI()
 startUp(false, currentPage);
@@ -87,7 +90,7 @@ function startUp(reload = true, page = 1) {
         let content = `
           <div class="card shadow mb-5 bg-body-tertiary rounded">
               <div class="card-header">
-                  <span style="cursor: pointer;" onclick="userClicked()">
+                  <span style="cursor: pointer;" onclick="goToUserProfile(${post.author.id})">
                     <img src="${profileImage}" class="rounded-circle border border-2" style="width: 40px; height: 40px;">
                     <h7 style="margin-left: 5px;"><b>${post.author.username ?? "no user"}</b></h7>
                   </span>
@@ -156,8 +159,8 @@ function addBtnClicked() {
 
 }
 
-function userClicked(){
-  window.location=`./profile.html`;
+function goToUserProfile(userId) {
+    window.location.href = `profile.html?id=${userId}`;
 }
 
 

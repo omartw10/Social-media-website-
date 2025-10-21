@@ -1,11 +1,16 @@
 document.getElementById("user-posts").innerHTML ="";
 document.getElementById("name-posts").innerHTML ="";
+
+const urlParams = new URLSearchParams(window.location.search);
+const id = urlParams.get("id");
+
+
 setupUI();
 getUser();
 
 function getUser(){
-    const id = "7093";
-    axios.get(`${baseUrl}/users/${id}`)
+    const userId = id;
+    axios.get(`${baseUrl}/users/${userId}`)
     .then((response) => {
         let user = response.data.data;
 
@@ -56,7 +61,7 @@ function getUser(){
 getUserPosts()
 
 function getUserPosts() {
-    const id = "7093";
+    
   axios(`${baseUrl}/users/${id}/posts`)
     .then((response) => {
       const posts = response.data.data;
@@ -111,9 +116,10 @@ function getUserPosts() {
         let content = `
           <div class="card shadow mb-5 bg-body-tertiary rounded">
               <div class="card-header">
-                  <img src="${profileImage}" class="rounded-circle border border-2" style="width: 40px; height: 40px;">
-                  <h7 style="margin-left: 5px;"><b>${post.author.username ?? "no user"}</b></h7>
-
+                  <span style="cursor: pointer;" onclick="goToUserProfile(${post.author.id})">
+                      <img src="${profileImage}" class="rounded-circle border border-2" style="width: 40px; height: 40px;">
+                      <h7 style="margin-left: 5px;"><b>${post.author.username}</b></h7> 
+                  </span>
                   ${deletePost}
                   ${editBtnContent}
                  
@@ -160,6 +166,11 @@ function getUserPosts() {
       
     });
 }
-    
+   
+function goToUserProfile(userId){
+    window.location.href = `profile.html?id=${userId}`;
+}
+
+
 
     
