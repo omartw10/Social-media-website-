@@ -67,7 +67,7 @@ function getUser(){
 getUserPosts()
 
 function getUserPosts() {
-    toggleLoader(true);
+  toggleLoader(true);
   axios(`${baseUrl}/users/${id}/posts`)
     .then((response) => {
       let posts = response.data.data || [];

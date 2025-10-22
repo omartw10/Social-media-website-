@@ -46,6 +46,7 @@ function loginBtnClicked(){
     let username = document.getElementById("username-input").value;
     let password = document.getElementById("password-input").value;
 
+    toggleLoader(true);
       
     const params ={
         "username":username,
@@ -69,7 +70,11 @@ function loginBtnClicked(){
         
 
         
-    })
+    }).catch((error)=>{
+        showAlert(error.response.data.message,`danger`); 
+    }).finally(()=>{
+        toggleLoader(false);
+    });
 
 }
 
@@ -80,6 +85,7 @@ function registerBtnClicked(){
     let password = document.getElementById("register-password-input").value;
     let image = document.getElementById("prfile-image-input").files[0];
 
+    toggleLoader(true);
     const bodyFormData = new FormData();
     bodyFormData.append("username",username);
     bodyFormData.append("password",password);
@@ -110,7 +116,9 @@ function registerBtnClicked(){
     })
     .catch((error)=>{
         showAlert(error.response.data.message,`danger`);
-    })
+    }).finally(()=>{
+        toggleLoader(false);
+    });
 
     
 }
@@ -251,6 +259,7 @@ function deletePostBtnClicked(postObj){
 function deletePostSubmitBtnClicked(){
   let postId = document.getElementById("post-id-input").value;
   let token = localStorage.getItem("token");
+  toggleLoader(true);
   axios.post(`${baseUrl}/posts/${postId}`,{
     "_method": "delete"
   },{
@@ -267,8 +276,10 @@ function deletePostSubmitBtnClicked(){
     showAlert("Post Deleted successfully","success",3000)
   }).catch((error)=>{
     console.log(error);
-    showAlert("Login Or register ","danger")
-  })
+    showAlert("Login Or register ","danger");
+  }).finally(()=>{
+    toggleLoader(false);
+  }); 
 
 }
 
@@ -289,6 +300,7 @@ function createNewPostClicked(){
   const bodyFormData = new FormData();
   bodyFormData.append("title", title);
   bodyFormData.append("body", body);
+  toggleLoader(true);
 
   if(image){
     bodyFormData.append("image", image, "mu_image.jpg");
@@ -331,6 +343,8 @@ function createNewPostClicked(){
           showAlert(errorMessage,"danger",4000);
         }
           
+        }).finally(()=>{
+          toggleLoader(false);
         })
     
     
