@@ -6,6 +6,7 @@ setupUI()
 getPost()
 
 function getPost(){
+    toggleLoader(true);
     axios.get(`${baseUrl}/posts/${id}`)
     .then((response)=>{
         let post = response.data.data;
@@ -140,6 +141,12 @@ function getPost(){
 
         document.getElementById("post-container").innerHTML=content;
     })
+    .catch((err) => {
+        console.error('Failed to fetch post:', err);
+    })
+    .finally(() => {
+        toggleLoader(false);
+    });
 }
 
 
@@ -152,6 +159,7 @@ function sendCommentBtnClicked(){
         let body = {
             "body":comment
         }
+        toggleLoader(true);
         axios.post((`${baseUrl}/posts/${id}/comments`),body,{
             headers :{
                 "Authorization":`Bearer ${token}`
@@ -169,8 +177,12 @@ function sendCommentBtnClicked(){
             
         })
 
-    }
+        .finally(() => {
+            toggleLoader(false);
+        })
+        
     
 
+    }
 }
 

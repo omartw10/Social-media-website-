@@ -12,6 +12,20 @@
 </head>
 
 <style>
+    .navbar-nav .nav-link,
+        .navbar-brand {
+            transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease, color 160ms ease;
+            border-radius: 6px;
+            padding: 4px 6px;
+        }
+
+        .navbar-nav .nav-link:hover,
+        .navbar-brand:hover {
+            transform: translateY(-1px);
+            background-color: rgba(255, 255, 255, 0.021);
+            color: #062a78 !important;
+            text-decoration: none;
+        }
 
     .user-main-info{
         font-size: 20px;
@@ -24,6 +38,79 @@
         font-size: 50px;
         color: black;
     }
+    #add-btn{
+            background: rgba(82, 82, 82, 0.788);
+            width: 60px;
+            height: 60px;
+            position: fixed;
+            bottom: 5%;
+            right: 5%;
+            border-radius: 50%;
+            color: white;
+            line-height: 0;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 150ms ease, opacity 150ms ease;
+            
+        }
+       #add-btn:hover{
+        transform: translateY(-3px);
+       }
+        /* Profile main card improvements */
+        #main-info-card { cursor: default; }
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            border: 4px solid rgba(255,255,255,0.85);
+            transition: transform 180ms ease, box-shadow 180ms ease;
+        }
+        .profile-avatar:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(0,0,0,0.18); }
+
+        #main-info { padding-left: 10px; }
+        .profile-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 6px; }
+        .profile-username { color: #6c757d; font-weight: 600; margin-bottom: 6px; }
+        .profile-email { color: #495057; font-weight: 500; opacity: 0.9; }
+
+        .stats { display: flex; gap: 12px; align-items: center; justify-content: flex-end; }
+        .stat { text-align: center; padding: 8px 12px; border-radius: 8px; background: rgba(0, 0, 0, 0.096); }
+        .stat .num { font-size: 1.4rem; font-weight: 700; display: block; }
+        .stat .label { color: #6c757d; font-size: 0.9rem; }
+
+        /* Responsive tweaks: stack on small screens */
+        @media (max-width: 767.98px) {
+            .profile-avatar { width: 120px; height: 120px; margin: 0 auto 10px auto; display: block; }
+            #main-info { text-align: center; padding-left: 0; }
+            .stats { justify-content: center; margin-top: 8px; }
+        }
+        /* Nav user styling */
+        .nav-user {
+            padding: 4px 6px;
+            border-radius: 8px;
+            transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+            cursor: pointer;
+        }
+        .nav-user img#user-profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            transition: transform 160ms ease, box-shadow 160ms ease;
+            display: inline-block;
+        }
+        .nav-user:hover {
+            transform: translateY(-1px);
+            background-color: rgba(255,255,255,0.03);
+            
+        }
+        .nav-user:hover img#user-profile-pic { transform: scale(1.06); box-shadow: 0 14px 36px rgba(0,0,0,0.16); }
 </style>
 <body>
 
@@ -136,6 +223,13 @@
     </div>
     <!--/ CRERAT POST MODAL /-->
 
+    <!-- CREATE POST -->
+         <div id="add-btn"    onclick="addBtnClicked()">
+            <h1 style="font-size:300%;">+</h1>
+         </div>
+    <!--/ CREATE POST /-->
+
+
     <!-- DELETE POST MODAL -->
     
     <div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -176,7 +270,7 @@
                     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                         <div class="navbar-nav">
                             <a class="nav-link active" aria-current="page" href="home.html">Home</a>
-                            <a class="nav-link" href="profile.html">Profile</a>       
+                            <span class="nav-link" style="cursor: pointer;" onclick="goToLoggidInUserProfile()">Profile</span>       
                         </div>
 
                          <!-- FOR NOT LOGGED-IN USER -->
@@ -187,8 +281,10 @@
                         <!--/ FOR NOT LOGGED-IN USER /-->
 
                         <!-- FOR LOGGED-IN USER -->
-                        <img id="user-profile-pic" src="./profile-pics/photo_2024-10-06_01-10-51.jpg" class="rounded-circle border border-2 " style="width: 40px ;height: 40px; border-radius: 50%; display: none;" alt="...">
-                        <h6 id="nav-username" style="margin:7px; display: none;">username</h6>
+                        <div class="nav-user d-flex align-items-center" style="gap:8px;">
+                            <img id="user-profile-pic" onclick="goToLoggidInUserProfile()" src="./profile-pics/photo_2024-10-06_01-10-51.jpg" class="rounded-circle border border-2" style="display: none;" alt="user avatar">
+                            <h6 id="nav-username" onclick="goToLoggidInUserProfile()" style="margin:0; display: none;">username</h6>
+                        </div>
                         <button onclick="logout()" id="logout-btn" type="button" class="btn btn-outline-danger" style="display: none;">Logout</button>
                         <!--/ FOR LOGGED-IN USER /-->
                     </div>
@@ -225,38 +321,39 @@
                          <div class="row ">
 
                             <!-- USER IMAGE COL -->
-                            <div class="col-3   ">
-                                <img id="user-profile-image" style="width: 150px;height: 150px; border-radius: 5px; box-shadow: 0px 0px 15px rgba(129, 129, 129, 0.5);  " src="./profile-pics/istockphoto-1337144146-612x612.jpg" onerror="this.onerror=null; this.src='/profile-pics/istockphoto-1337144146-612x612.jpg';">
+                            <div class="col-3 text-center d-flex align-items-center justify-content-center">
+                                <img id="user-profile-image" class="profile-avatar" src="./profile-pics/istockphoto-1337144146-612x612.jpg" onerror="this.onerror=null; this.src='/profile-pics/istockphoto-1337144146-612x612.jpg';" alt="profile avatar">
                             </div>
                             <!--/ USER IMAGE COL /-->
 
                             <!-- USERNAME - EMAIL - NAME -->
                             <div id="main-info" class="col-5 d-flex flex-column justify-content-evenly " style="font-weight: 500;">
 
-                                <div id="main-info-email" class="user-main-info">
-                                    
+                                <div id="main-info-name" class="profile-name">
                                 </div>
 
-                                <div id="main-info-name" class="user-main-info">
-                                    
+                                <div id="main-info-username" class="profile-username">
                                 </div>
 
-                                <div id="main-info-username" class="user-main-info">
-                                    
+                                <div id="main-info-email" class="profile-email">
                                 </div>
 
                             </div>
                             <!--/ USERNAME - EMAIL - NAME /-->
 
                             <!-- POSTS & COMMENTS COUNTS -->
-                            <div class="col-4 d-flex flex-column justify-content-evenly ">
-                                <div class="number-info">
-                                    <span id="user-posts-count"></span> Posts
-                                </div>
-                                <div class="number-info">
-                                    <span id="user-comments-count"></span> Comments
-                                </div>
-                            </div>
+                                                        <div class="col-4 d-flex flex-column justify-content-center align-items-end">
+                                                                <div class="stats">
+                                                                    <div class="stat">
+                                                                        <span class="num" id="user-posts-count"></span>
+                                                                        <span class="label">Posts</span>
+                                                                    </div>
+                                                                    <div class="stat">
+                                                                        <span class="num" id="user-comments-count"></span>
+                                                                        <span class="label">Comments</span>
+                                                                    </div>
+                                                                </div>
+                                                        </div>
                             <!--/ POSTS & COMMENTS COUNTS /-->
 
                          </div>   

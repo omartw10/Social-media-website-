@@ -213,6 +213,18 @@ function resolveImageUrl(maybeImage) {
   return null;
 }
 
+// Global loader toggle helper. Call toggleLoader(true) to show, toggleLoader(false) to hide.
+function toggleLoader(show = true) {
+  try {
+    const el = document.getElementById('loader-backdrop');
+    if (!el) return; // no loader in this page
+    el.style.display = show ? 'flex' : 'none';
+  } catch (e) {
+    // defensive: if DOM not ready or other issue, swallow error
+    console.warn('toggleLoader failed', e);
+  }
+}
+
 function editPostBtnClicked(postObj){
   let post = JSON.parse(decodeURIComponent(postObj))
 
@@ -226,7 +238,6 @@ function editPostBtnClicked(postObj){
   let postModal = new bootstrap.Modal(document.getElementById("create-post-modal"),{})
   postModal.toggle()
 }
-
 
 function deletePostBtnClicked(postObj){
   let post = JSON.parse(decodeURIComponent(postObj))
@@ -323,5 +334,32 @@ function createNewPostClicked(){
         })
     
     
-  } 
-    
+} 
+  
+function goToLoggidInUserProfile(){
+    const user = getCurrentUser(); 
+   
+    if(user){
+        window.location.href = `profile.html?id=${user.id}`;
+    }else{
+        showAlert("❌ No user is currently logged in.","danger", 4000);
+    }
+}
+
+function postClicked(postId){
+    window.location=`file:///D:/Website%20projects/course/Final%20project/postDetails.html?postId=${postId}`;
+}
+
+function addBtnClicked() {
+
+  document.getElementById("image-container").style.visibility="visible"
+  document.getElementById("post-id-input").value = "";
+  document.getElementById("post-modal.title").innerHTML = "Create Post"
+  document.getElementById("create-edit-btn").innerHTML = "Create"
+  document.getElementById("title-input").value = "";
+  document.getElementById("body-input").value = "";
+
+  let postModal = new bootstrap.Modal(document.getElementById("create-post-modal"),{})
+  postModal.toggle()
+
+}

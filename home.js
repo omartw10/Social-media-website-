@@ -34,6 +34,7 @@ function scrollFun(){
 
 
 function startUp(reload = true, page = 1) {
+  toggleLoader(true);
   axios(`${baseUrl}/posts?limit=5&page=${page}`)
     .then((response) => {
       const posts = response.data.data;
@@ -136,33 +137,34 @@ function startUp(reload = true, page = 1) {
     })
     .finally(() => {
       isLoading = false;
-      
+      toggleLoader(false);
     });
 }
+ 
+// ====SCROLL TO TOP BUTTON==== //
+(function(){
+  const btn = document.getElementById('scroll-top-btn');
+  if (!btn) return;
+
+  // Show button after user scrolls down 200px
+  window.addEventListener('scroll', () => {
+      if (window.scrollY > 200) btn.style.display = 'flex';
+      else btn.style.display = 'none';
+  });
+
+  btn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();
+// ====SCROLL TO TOP BUTTON==== //
 
 
-function postClicked(postId){
-    window.location=`file:///D:/Website%20projects/course/Final%20project/postDetails.html?postId=${postId}`;
-}
-
-function addBtnClicked() {
-
-  document.getElementById("image-container").style.visibility="visible"
-  document.getElementById("post-id-input").value = "";
-  document.getElementById("post-modal.title").innerHTML = "Create Post"
-  document.getElementById("create-edit-btn").innerHTML = "Create"
-  document.getElementById("title-input").value = "";
-  document.getElementById("body-input").value = "";
-
-  let postModal = new bootstrap.Modal(document.getElementById("create-post-modal"),{})
-  postModal.toggle()
-
-}
 
 function goToUserProfile(userId) {
     window.location.href = `profile.html?id=${userId}`;
 }
 
+// centralized toggleLoader is provided by mainLogic.js
 
 
 

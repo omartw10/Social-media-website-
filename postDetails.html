@@ -16,6 +16,21 @@
             overflow-y: auto;
         }
 
+        .navbar-nav .nav-link,
+            .navbar-brand {
+                transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease, color 160ms ease;
+                border-radius: 6px;
+                padding: 4px 6px;
+            }
+
+            .navbar-nav .nav-link:hover,
+            .navbar-brand:hover {
+                transform: translateY(-1px);
+                background-color: rgba(255, 255, 255, 0.021);
+                color: #062a78 !important;
+                text-decoration: none;
+            }
+
 
         #add-btn{
             
@@ -39,6 +54,29 @@
        #add-btn:hover{
         box-shadow: 0px 0px 10px rgba(0,0,0, 0.8);
        }
+
+       /* Nav user styling */
+        .nav-user {
+            padding: 4px 6px;
+            border-radius: 8px;
+            transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+            cursor: pointer;
+        }
+        .nav-user img#user-profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            transition: transform 160ms ease, box-shadow 160ms ease;
+            display: inline-block;
+        }
+        .nav-user:hover {
+            transform: translateY(-1px);
+            background-color: rgba(255,255,255,0.03);
+            
+        }
+        .nav-user:hover img#user-profile-pic { transform: scale(1.06); box-shadow: 0 14px 36px rgba(0,0,0,0.16); }
     </style>
 </head>
 <body>
@@ -135,7 +173,7 @@
                     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                         <div class="navbar-nav">
                             <a class="nav-link active" aria-current="page" href="home.html">Home</a>
-                            <a class="nav-link" href="profile.html">Profile</a>       
+                            <span class="nav-link" style="cursor: pointer;" onclick="goToLoggidInUserProfile()">Profile</span>       
                         </div>
 
                          <!-- FOR NOT LOGGED-IN USER -->
@@ -146,8 +184,10 @@
                         <!--/ FOR NOT LOGGED-IN USER /-->
 
                         <!-- FOR LOGGED-IN USER -->
-                        <img id="user-profile-pic" src="./profile-pics/photo_2024-10-06_01-10-51.jpg" class="rounded-circle border border-2 " style="width: 40px ;height: 40px; border-radius: 50%; display: none;" alt="...">
-                        <h6 id="nav-username" style="margin:7px; display: none;">username</h6>
+                        <div class="nav-user d-flex align-items-center" style="gap:8px;">
+                            <img id="user-profile-pic" onclick="goToLoggidInUserProfile()" src="./profile-pics/photo_2024-10-06_01-10-51.jpg" class="rounded-circle border border-2" style="display: none;" alt="user avatar">
+                            <h6 id="nav-username" onclick="goToLoggidInUserProfile()" style="margin:0; display: none;">username</h6>
+                        </div>
                         <button onclick="logout()" id="logout-btn" type="button" class="btn btn-outline-danger" style="display: none;">Logout</button>
                         <!--/ FOR LOGGED-IN USER /-->
                     </div>

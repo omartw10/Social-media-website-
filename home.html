@@ -8,6 +8,8 @@
     <script src="mainLogic.js"></script>
     <script src="./node_modules/axios/dist/axios.min.js"></script>
     <script src="./node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+           
+            
     <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.min.css">
     <style>
         body{
@@ -15,9 +17,23 @@
             overflow-y: auto;
         }
 
+        .navbar-nav .nav-link,
+            .navbar-brand {
+                transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease, color 160ms ease;
+                border-radius: 6px;
+                padding: 4px 6px;
+            }
+
+            .navbar-nav .nav-link:hover,
+            .navbar-brand:hover {
+                transform: translateY(-1px);
+                background-color: rgba(255, 255, 255, 0.021);
+                color: #062a78 !important;
+                text-decoration: none;
+            }
 
         #add-btn{
-            
+            background: rgba(82, 82, 82, 0.788);
             width: 60px;
             height: 60px;
             position: fixed;
@@ -31,23 +47,161 @@
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            box-shadow: 0px 0px 15px rgba(0,0,0, 0.5);
-            transition: 200ms;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 150ms ease, opacity 150ms ease;
             
         }
        #add-btn:hover{
-        box-shadow: 0px 0px 10px rgba(0,0,0, 0.8);
+        transform: translateY(-3px);
        }
+
+       #scroll-top-btn {
+            position: fixed;
+            left: 5%;
+            bottom: 5%;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(82, 82, 82, 0.788);
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            cursor: pointer;
+            z-index: 99999;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 150ms ease, opacity 150ms ease;
+        }
+        #scroll-top-btn:hover { transform: translateY(-3px); }
+        /* Nav user styling */
+        .nav-user {
+            padding: 4px 6px;
+            border-radius: 8px;
+            transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease;
+            cursor: pointer;
+        }
+        .nav-user img#user-profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            transition: transform 160ms ease, box-shadow 160ms ease;
+            display: inline-block;
+        }
+        .nav-user:hover {
+            transform: translateY(-1px);
+            background-color: rgba(255,255,255,0.03);
+            
+        }
+        .nav-user:hover img#user-profile-pic { transform: scale(1.06); box-shadow: 0 14px 36px rgba(0,0,0,0.16); }
+
+        /* Loading spinner styling */
+        .lds-roller,
+        .lds-roller div,
+        .lds-roller div:after {
+        box-sizing: border-box;
+        }
+        .lds-roller {
+        display: inline-block;
+        position: relative;
+        width: 80px;
+        height: 80px;
+        }
+        .lds-roller div {
+        animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+        transform-origin: 40px 40px;
+        }
+        .lds-roller div:after {
+        content: " ";
+        display: block;
+        position: absolute;
+        width: 7.2px;
+        height: 7.2px;
+        border-radius: 50%;
+        background: currentColor;
+        margin: -3.6px 0 0 -3.6px;
+        }
+        .lds-roller div:nth-child(1) {
+        animation-delay: -0.036s;
+        }
+        .lds-roller div:nth-child(1):after {
+        top: 62.62742px;
+        left: 62.62742px;
+        }
+        .lds-roller div:nth-child(2) {
+        animation-delay: -0.072s;
+        }
+        .lds-roller div:nth-child(2):after {
+        top: 67.71281px;
+        left: 56px;
+        }
+        .lds-roller div:nth-child(3) {
+        animation-delay: -0.108s;
+        }
+        .lds-roller div:nth-child(3):after {
+        top: 70.90963px;
+        left: 48.28221px;
+        }
+        .lds-roller div:nth-child(4) {
+        animation-delay: -0.144s;
+        }
+        .lds-roller div:nth-child(4):after {
+        top: 72px;
+        left: 40px;
+        }
+        .lds-roller div:nth-child(5) {
+        animation-delay: -0.18s;
+        }
+        .lds-roller div:nth-child(5):after {
+        top: 70.90963px;
+        left: 31.71779px;
+        }
+        .lds-roller div:nth-child(6) {
+        animation-delay: -0.216s;
+        }
+        .lds-roller div:nth-child(6):after {
+        top: 67.71281px;
+        left: 24px;
+        }
+        .lds-roller div:nth-child(7) {
+        animation-delay: -0.252s;
+        }
+        .lds-roller div:nth-child(7):after {
+        top: 62.62742px;
+        left: 17.37258px;
+        }
+        .lds-roller div:nth-child(8) {
+        animation-delay: -0.288s;
+        }
+        .lds-roller div:nth-child(8):after {
+        top: 56px;
+        left: 12.28719px;
+        }
+        @keyframes lds-roller {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+        }
+
+
     </style>
 </head>
 <body>
 
-    <!-- LOADING -->
-     <div id="loading" style="text-align:center; display:none;">
-        <span>Loading...</span>
+    <!-- LOADER -->
+    <div id="loader-backdrop" style="color: #ffffff; background-color: rgba(163, 163, 163, 0.61); position: fixed; right: 0px; left: 0px; top: 0px; bottom: 0px; z-index: 99999; margin: auto auto; width: 100px; height: 100px; display: flex; justify-content: center; align-items: center; border-radius: 20px;" >
+        <div class="lds-roller" >
+            <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        </div>
     </div>
-    <!--/ LOADING /-->
-
+        
+    <!--/ LOADER /-->
 
     <!-- LOGIN MODAL -->     
     <div class="modal fade" id="login-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -180,10 +334,16 @@
 
 
     <!-- CREATE POST -->
-         <div id="add-btn" class="bg-primary"   onclick="addBtnClicked()">
+         <div id="add-btn"    onclick="addBtnClicked()">
             <h1 style="font-size:300%;">+</h1>
          </div>
     <!--/ CREATE POST /-->
+
+    <!-- SCROLL TO TOP BUTTON -->
+    <button id="scroll-top-btn" title="Back to top" aria-label="Back to top" style="display:none;">
+        ↑
+    </button>
+    <!--/ SCROLL TO TOP BUTTON /-->
 
 
 
@@ -208,7 +368,7 @@
                     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                         <div class="navbar-nav">
                             <a class="nav-link active" aria-current="page" href="home.html">Home</a>
-                            <a class="nav-link" href="profile.html">Profile</a>       
+                            <span class="nav-link" style="cursor: pointer;" onclick="goToLoggidInUserProfile()">Profile</span>       
                         </div>
 
                          <!-- FOR NOT LOGGED-IN USER -->
@@ -219,8 +379,10 @@
                         <!--/ FOR NOT LOGGED-IN USER /-->
 
                         <!-- FOR LOGGED-IN USER -->
-                        <img id="user-profile-pic" src="./profile-pics/photo_2024-10-06_01-10-51.jpg" class="rounded-circle border border-2 " style="width: 40px ;height: 40px; border-radius: 50%; display: none;" alt="...">
-                        <h6 id="nav-username" style="margin:7px; display: none;">username</h6>
+                        <div class="nav-user d-flex align-items-center" style="gap:8px;">
+                            <img id="user-profile-pic" onclick="goToLoggidInUserProfile()" src="./profile-pics/photo_2024-10-06_01-10-51.jpg" class="rounded-circle border border-2" style="display: none;" alt="user avatar">
+                            <h6 id="nav-username" onclick="goToLoggidInUserProfile()" style="margin:0; display: none;">username</h6>
+                        </div>
                         <button onclick="logout()" id="logout-btn" type="button" class="btn btn-outline-danger" style="display: none;">Logout</button>
                         <!--/ FOR LOGGED-IN USER /-->
                     </div>
@@ -307,5 +469,6 @@
 
     
 <script src="home.js"></script>
+        
 </body>
 </html>

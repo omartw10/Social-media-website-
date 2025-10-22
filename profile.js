@@ -1,6 +1,8 @@
 document.getElementById("user-posts").innerHTML ="";
 document.getElementById("name-posts").innerHTML ="";
 
+
+
 const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get("id");
 
@@ -9,9 +11,10 @@ setupUI();
 getUser();
 
 function getUser(){
-    const userId = id;
-    axios.get(`${baseUrl}/users/${userId}`)
-    .then((response) => {
+  const userId = id;
+  toggleLoader(true);
+  axios.get(`${baseUrl}/users/${userId}`)
+  .then((response) => {
         let user = response.data.data;
 
         const defaultProfileImage = "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=";
@@ -22,7 +25,7 @@ function getUser(){
                 (user["profile_image"] && typeof user["profile_image"] === "object" && user["profile_image"].url) ||
                 defaultProfileImage;
 
-            console.log(response.data);
+            
 
             // helper to set image with fallback on error or when src points to localhost
             function setImageWithFallback(imgEl, src, fallback) {
@@ -52,20 +55,53 @@ function getUser(){
             document.getElementById("user-posts-count").innerText = user.posts_count;
             document.getElementById("user-comments-count").innerText = user.comments_count;
             document.getElementById("name-posts").innerText = `${user.name}'s Posts`;
-        })
-        .catch((err) => {
-            console.error('Failed to fetch user:', err);
-        });
+    })
+    .catch((err) => {
+      console.log('Failed to fetch user:', err);
+    })
+    .finally(() => {
+      toggleLoader(false);
+    });
 }
 
 getUserPosts()
 
 function getUserPosts() {
-    
+    toggleLoader(true);
   axios(`${baseUrl}/users/${id}/posts`)
     .then((response) => {
-      const posts = response.data.data;
-      console.log(response.data);
+      let posts = response.data.data || [];
+      if (!Array.isArray(posts)) posts = [];
+
+      // Clear container before (re)rendering
+      const postsContainer = document.getElementById('user-posts');
+      if (postsContainer) postsContainer.innerHTML = '';
+
+      // Robust timestamp extractor: tries several common fields and formats,
+      // falls back to numeric id when timestamps aren't available.
+      function getPostTimestamp(post) {
+        const candidates = [post.created_at, post.createdAt, post.created, post.published_at, post.timestamp];
+        for (const c of candidates) {
+          if (c === undefined || c === null) continue;
+          if (typeof c === 'number' && isFinite(c)) return c;
+          if (typeof c === 'string') {
+            // numeric string (unix timestamp)
+            if (/^\d+$/.test(c)) return parseInt(c, 10);
+            const parsed = Date.parse(c);
+            if (!isNaN(parsed)) return parsed;
+          }
+        }
+        // fallback: use numeric id (higher id likely newer)
+        if (post.id !== undefined && post.id !== null) {
+          if (typeof post.id === 'number') return post.id;
+          if (typeof post.id === 'string' && /^\d+$/.test(post.id)) return parseInt(post.id, 10);
+        }
+        return 0;
+      }
+
+      // sort newest first
+      posts.sort((a, b) => getPostTimestamp(b) - getPostTimestamp(a));
+      
       
 
      
@@ -158,12 +194,12 @@ function getUserPosts() {
       
     })
     .catch((error) => {
-        console.error(error);
+        console.log(error);
        showAlert(`"❌ Error loading posts:"${error.message}" `,"danger" , 4000)    
     })
     .finally(() => {
       isLoading = false;
-      
+      toggleLoader(false);
     });
 }
    
@@ -171,6 +207,3 @@ function goToUserProfile(userId){
     window.location.href = `profile.html?id=${userId}`;
 }
 
-
-
-    
