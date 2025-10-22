@@ -9,6 +9,18 @@
   --shadow: 0 6px 18px rgba(0,0,0,0.6);
 }
 
+/* Hide UI until app signals ready to avoid showing placeholder content */
+html.app-hidden body > *:not(#loader-backdrop) {
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* keep loader visible while app is hidden */
+html.app-hidden #loader-backdrop {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
 /* Apply background when either <html> or <body> has the .dark-mode class.
    Use selectors with high specificity to override inline styles in existing pages. */
 html.dark-mode body,

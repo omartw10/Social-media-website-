@@ -12,6 +12,7 @@ What I changed to make it Netlify-ready
 - Added `index.html` which redirects to `home.html` so the site root works on Netlify.
 - Added `dark-mode.css` and wired theme toggling in `mainLogic.js`.
 - Added dark-mode overrides for comment blocks (id `comments`).
+ - Added "hide-until-ready" behavior: pages start hidden (no placeholders) until the app finishes initial load and calls `revealApp()` (automatically triggered after the first loader hide). This prevents flicker of placeholder content before API data loads.
 
 How to deploy (easy ways)
 
@@ -42,8 +43,11 @@ Checklist (what you should verify after deploy)
 
 - [ ] Page root loads (index redirects to home)
 - [ ] Theme toggle appears and persists across reloads
+ - [ ] Theme toggle appears and persists across reloads
 - [ ] Comments (postDetails) show dark background when dark mode is selected
 - [ ] No console errors about missing files or failed network requests (check browser DevTools)
+
+Testing note: open the site and observe that the page stays hidden while the loader is visible; once data is fetched the loader hides and the UI is revealed — this prevents showing initial placeholder images before API data arrives.
 
 Notes & suggestions
 

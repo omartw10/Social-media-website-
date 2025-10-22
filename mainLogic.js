@@ -53,6 +53,22 @@ function ensureDarkModeStylesheet() {
   document.head.appendChild(link);
 }
 
+// Hide UI until app is ready to prevent placeholder flicker
+try {
+  if (document && document.documentElement) {
+    document.documentElement.classList.add('app-hidden');
+  }
+} catch (e) {}
+
+let _appRevealed = false;
+function revealApp() {
+  if (_appRevealed) return;
+  _appRevealed = true;
+  try {
+    document.documentElement.classList.remove('app-hidden');
+  } catch (e) {}
+}
+
 function isDarkMode() {
   try {
     return localStorage.getItem('theme') === 'dark';
@@ -320,6 +336,11 @@ function toggleLoader(show = true) {
     const el = document.getElementById('loader-backdrop');
     if (!el) return; // no loader in this page
     el.style.display = show ? 'flex' : 'none';
+    // when hiding the loader for the first time, reveal the app
+    if (!show) {
+      // small delay to make sure content has been rendered
+      setTimeout(revealApp, 80);
+    }
   } catch (e) {
     // defensive: if DOM not ready or other issue, swallow error
     console.warn('toggleLoader failed', e);
