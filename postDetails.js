@@ -33,16 +33,13 @@ function getPost(){
             "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=";
             commentsContent += 
             `
-            
-
-        
                 <!-- COMMENT -->
-                <div id="comments" class="p-3  " style="background-color: rgb(235, 234, 234); ">
+                <div class="comment-block p-3">
 
                     <!-- PROFILE PICTURE + USERNAME -->
-                    <div>
-                        <img src="${profileImage}" class="rounded-circle border border-2" style="width: 40px; height: 40px; display: inline-block; ;" >
-                        <h7 style="display: inline-block; margin-left: 5px;"><b>${comment.author.username} </b></h7>
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <img src="${profileImage}" class="rounded-circle border border-2" style="width: 40px; height: 40px; display: inline-block;" >
+                        <strong>${comment.author.username}</strong>
                     </div>
                     <!-- PROFILE PICTURE + USERNAME -->
 
@@ -52,14 +49,9 @@ function getPost(){
 
                     </div>
                     <hr>
-                    <!--/ COMMENT's BODY /-->
-
                 </div>
                 <!--/ COMMENT /-->
 
-                
-            
-            
             `
 
             
@@ -68,7 +60,7 @@ function getPost(){
         let content=
         `
     <!-- POST CONTAINER -->
-    <div id="post-container" style="width: 100%; height: 100vh;">
+    <div id="post-container" style="width: 100%; min-height: 100vh;">
 
         <!-- USER's POST -->
         

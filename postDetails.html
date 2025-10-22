@@ -33,7 +33,7 @@
             }
 
 
-        #add-btn{
+        /* #add-btn{
             
             width: 60px;
             height: 60px;
@@ -50,11 +50,11 @@
             cursor: pointer;
             box-shadow: 0px 0px 15px rgba(0,0,0, 0.5);
             transition: 200ms;
-            
+            z-index: 999999;
         }
        #add-btn:hover{
         box-shadow: 0px 0px 10px rgba(0,0,0, 0.8);
-       }
+       } */
 
        /* Nav user styling */
         .nav-user {
@@ -79,7 +79,7 @@
         }
         .nav-user:hover img#user-profile-pic { transform: scale(1.06); box-shadow: 0 14px 36px rgba(0,0,0,0.16); }
     
-        /* LOADER */    
+    /* LOADER */    
         .loader {
         width: 20px;
         aspect-ratio: 4;
@@ -97,6 +97,17 @@
             66%{background-size:calc(100%/3) 100%,calc(100%/3) 100%,calc(100%/3) 0%  }
         } 
         /*/ LOADER /*/
+
+        /* Comment blocks - rely on CSS so dark mode can override */
+        .comment-block { background-color: #ebebeb; border-radius: 6px; }
+        .comment-block img { width: 40px; height: 40px; object-fit: cover; }
+
+        /* Ensure add button sits above content */
+        #add-btn { z-index: 200000; }
+        @media (max-width: 400px) {
+            #add-btn { width: 48px; height: 48px; }
+            #add-btn h1 { font-size: 180%; margin:0; }
+        }
 
 
     </style>
@@ -214,7 +225,7 @@
 
                         <!-- FOR LOGGED-IN USER -->
                         <div class="nav-user d-flex align-items-center" style="gap:8px;">
-                            <img id="user-profile-pic" onclick="goToLoggidInUserProfile()" src="https://via.placeholder.com/40?text=U" class="rounded-circle border border-2" style="display: none;" alt="user avatar">
+                            <img id="user-profile-pic" onclick="goToLoggidInUserProfile()" src="./profile-pics/photo_2024-10-06_01-10-51.jpg" class="rounded-circle border border-2" style="display: none;" alt="user avatar">
                             <h6 id="nav-username" onclick="goToLoggidInUserProfile()" style="margin:0; display: none;">username</h6>
                         </div>
                         <button onclick="logout()" id="logout-btn" type="button" class="btn btn-outline-danger" style="display: none;">Logout</button>
@@ -234,7 +245,7 @@
 
 
     <!-- POST CONTAINER -->
-    <div id="post-container" style="width: 100%; height: 100vh; ">
+    <div id="post-container" style="width: 100%; min-height: 100vh; ">
 
         <!-- USER's POST -->
         
@@ -259,12 +270,12 @@
             <div class="card shadow p-0 mb-5 bg-body-tertiary rounded col-lg-9">
 
                 <div class="card-header " >
-                    <img src="https://via.placeholder.com/40?text=U" class="rounded-circle border border-2" style="width: 40px; height: 40px; display: inline-block; ;" >
+                    <img src="profile-pics/profilePic.jpg" class="rounded-circle border border-2" style="width: 40px; height: 40px; display: inline-block; ;" >
                     <h7 style="display: inline-block; margin-left: 5px;"><b> @omar_tw10 </b></h7>
                 </div>
                 <div class="card-body">
 
-                    <img class="rounded" src="https://via.placeholder.com/1200x600?text=Post" alt="" style="width: 100%;">
+                    <img class="rounded" src="./post-pics/postPic1.jpg" alt="" style="width: 100%;">
                     
                     <p style="text-align: right;">
                         2 min ago
@@ -294,11 +305,11 @@
                 </div>
 
                 <!-- COMMENTS -->
-                    <div id="comments" class="p-3  " style="background-color: rgb(235, 234, 234); ">
+                    <div id="comments" class="p-3  " style="background-color: rgb(235, 234, 234); box-shadow: inset 0 0 0 1px rgba(0,0,0,0.02); border-radius:6px;">
 
                         <!-- PROFILE PICTURE + USERNAME -->
                         <div>
-                            <img src="https://via.placeholder.com/40?text=U" class="rounded-circle border border-2" style="width: 40px; height: 40px; display: inline-block; ;" >
+                            <img src="profile-pics/profilePic.jpg" class="rounded-circle border border-2" style="width: 40px; height: 40px; display: inline-block; ;" >
                             <h7 style="display: inline-block; margin-left: 5px;"><b> @omar_tw10 </b></h7>
                         </div>
                         <!-- PROFILE PICTURE + USERNAME -->

@@ -57,7 +57,7 @@
             cursor: pointer;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
             transition: transform 150ms ease, opacity 150ms ease;
-            
+            z-index: 99999;
         }
        #add-btn:hover{
         transform: translateY(-3px);
@@ -87,9 +87,19 @@
 
         /* Responsive tweaks: stack on small screens */
         @media (max-width: 767.98px) {
-            .profile-avatar { width: 120px; height: 120px; margin: 0 auto 10px auto; display: block; }
+            .profile-avatar { max-width: 120px; height: auto; margin: 0 auto 10px auto; display: block; }
             #main-info { text-align: center; padding-left: 0; }
             .stats { justify-content: center; margin-top: 8px; }
+        }
+
+        /* Make stat boxes flexible */
+        .stat { min-width: 70px; padding: 6px 10px; }
+
+        /* Ensure add button floats above content and scales on small screens */
+        #add-btn { z-index: 200000; }
+        @media (max-width: 399.98px) {
+            #add-btn { width: 48px; height: 48px; bottom: 6%; right: 4%; }
+            #add-btn h1 { font-size: 180%; margin:0; }
         }
         /* Nav user styling */
         .nav-user {
@@ -310,7 +320,7 @@
 
                         <!-- FOR LOGGED-IN USER -->
                         <div class="nav-user d-flex align-items-center" style="gap:8px;">
-                            <img id="user-profile-pic" onclick="goToLoggidInUserProfile()" src="https://via.placeholder.com/40?text=U" class="rounded-circle border border-2" style="display: none;" alt="user avatar">
+                            <img id="user-profile-pic" onclick="goToLoggidInUserProfile()" src="./profile-pics/photo_2024-10-06_01-10-51.jpg" class="rounded-circle border border-2" style="display: none;" alt="user avatar">
                             <h6 id="nav-username" onclick="goToLoggidInUserProfile()" style="margin:0; display: none;">username</h6>
                         </div>
                         <button onclick="logout()" id="logout-btn" type="button" class="btn btn-outline-danger" style="display: none;">Logout</button>
@@ -331,7 +341,7 @@
 
     <!-- MAIN CONTAINER -->
 
-    <div class="container  " style="width: 100%; height: 100vh;">
+    <div class="container  " style="width: 100%; min-height: 100vh;">
 
         
 
@@ -343,48 +353,37 @@
 
                 
                  <!-- MAIN INFO  -->
-                <div   class="card shadow mb-5 bg-body-tertiary rounded">
-                    
-                    <div id="main-info-card" class="card-body "  style="cursor:pointer;">
-                         <div class="row ">
+                <div class="card shadow mb-5 bg-body-tertiary rounded">
+                    <div id="main-info-card" class="card-body" style="cursor:pointer;">
+                        <div class="row g-3 align-items-center">
 
-                            <!-- USER IMAGE COL -->
-                            <div class="col-3 text-center d-flex align-items-center justify-content-center">
-                                <img id="user-profile-image" class="profile-avatar" src="https://via.placeholder.com/150?text=User" onerror="this.onerror=null; this.src='https://via.placeholder.com/150?text=User';" alt="profile avatar">
+                            <!-- USER IMAGE COL: responsive -->
+                            <div class="col-12 col-md-3 text-center d-flex align-items-center justify-content-center">
+                                <img id="user-profile-image" class="profile-avatar img-fluid" src="./profile-pics/istockphoto-1337144146-612x612.jpg" onerror="this.onerror=null; this.src='/profile-pics/istockphoto-1337144146-612x612.jpg';" alt="profile avatar" style="max-width:150px; width:100%; height:auto; border-radius:12px;">
                             </div>
-                            <!--/ USER IMAGE COL /-->
 
-                            <!-- USERNAME - EMAIL - NAME -->
-                            <div id="main-info" class="col-5 d-flex flex-column justify-content-evenly " style="font-weight: 500;">
-
-                                <div id="main-info-name" class="profile-name">
-                                </div>
-
-                                <div id="main-info-username" class="profile-username">
-                                </div>
-
-                                <div id="main-info-email" class="profile-email">
-                                </div>
-
+                            <!-- USERNAME - EMAIL - NAME: take remaining space on md+ -->
+                            <div id="main-info" class="col-12 col-md-6 d-flex flex-column justify-content-evenly" style="font-weight: 500;">
+                                <div id="main-info-name" class="profile-name"></div>
+                                <div id="main-info-username" class="profile-username"></div>
+                                <div id="main-info-email" class="profile-email"></div>
                             </div>
-                            <!--/ USERNAME - EMAIL - NAME /-->
 
-                            <!-- POSTS & COMMENTS COUNTS -->
-                                                        <div class="col-4 d-flex flex-column justify-content-center align-items-end">
-                                                                <div class="stats">
-                                                                    <div class="stat">
-                                                                        <span class="num" id="user-posts-count"></span>
-                                                                        <span class="label">Posts</span>
-                                                                    </div>
-                                                                    <div class="stat">
-                                                                        <span class="num" id="user-comments-count"></span>
-                                                                        <span class="label">Comments</span>
-                                                                    </div>
-                                                                </div>
-                                                        </div>
-                            <!--/ POSTS & COMMENTS COUNTS /-->
+                            <!-- POSTS & COMMENTS COUNTS: align on md+, stack on small -->
+                            <div class="col-12 col-md-3 d-flex flex-column justify-content-center align-items-md-end align-items-start">
+                                <div class="stats d-flex gap-2 flex-wrap justify-content-center justify-content-md-end">
+                                    <div class="stat">
+                                        <span class="num" id="user-posts-count"></span>
+                                        <span class="label">Posts</span>
+                                    </div>
+                                    <div class="stat">
+                                        <span class="num" id="user-comments-count"></span>
+                                        <span class="label">Comments</span>
+                                    </div>
+                                </div>
+                            </div>
 
-                         </div>   
+                        </div>
                     </div>
                 </div>
 
@@ -407,7 +406,7 @@
                     <div class="card shadow mb-5 bg-body-tertiary rounded">
                         <div class="card-header">
                             
-                            <img src="https://via.placeholder.com/40?text=U" class="rounded-circle border border-2" style="width: 40px; height: 40px; display: inline-block; ;" >
+                            <img src="profile-pics/profilePic.jpg" class="rounded-circle border border-2" style="width: 40px; height: 40px; display: inline-block; ;" >
                             <h7 style="margin-left: 5px;"><b>@omar_tw</b></h7>
 
                             <button class="btn btn-danger " style="float: right;"   >
@@ -427,7 +426,7 @@
                     
                         </div>
                         <div class="card-body"  style="cursor:pointer;">
-                                <img class="rounded" src="https://via.placeholder.com/1200x600?text=Post" alt="" style="width: 100%;">
+                                <img class="rounded" src="./post-pics/postPic1.jpg" alt="" style="width: 100%;">
                                 <p style="text-align: right;">2 min ago</p>
                                 <h4>Title</h4>
                                 <p>Body</p>
