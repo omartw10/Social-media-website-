@@ -42,6 +42,99 @@ function setupUI(){
     }
 }
 
+// THEME (dark mode) helpers
+// Inject dark-mode stylesheet and provide toggle/persistence utilities
+function ensureDarkModeStylesheet() {
+  if (document.getElementById('dark-mode-styles')) return;
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.href = 'dark-mode.css';
+  link.id = 'dark-mode-styles';
+  document.head.appendChild(link);
+}
+
+function isDarkMode() {
+  try {
+    return localStorage.getItem('theme') === 'dark';
+  } catch (e) {
+    return false;
+  }
+}
+
+function applyDarkMode(enabled) {
+  ensureDarkModeStylesheet();
+  const root = document.documentElement || document.body;
+  if (enabled) {
+    root.classList.add('dark-mode');
+    localStorage.setItem('theme', 'dark');
+  } else {
+    root.classList.remove('dark-mode');
+    localStorage.setItem('theme', 'light');
+  }
+}
+
+function toggleDarkMode() {
+  const enabled = !isDarkMode();
+  applyDarkMode(enabled);
+}
+
+// Adds a theme toggle button into the navbar if navbar exists
+function injectThemeToggle() {
+  // avoid injecting multiple times
+  if (document.getElementById('theme-toggle-btn')) return;
+  // find a navbar container
+  const navs = document.getElementsByClassName('navbar-nav');
+  let target = null;
+  if (navs && navs.length > 0) {
+    // choose the first navbar-nav found
+    target = navs[0];
+  } else {
+    // fallback: search for .navbar
+    const nav = document.querySelector('.navbar');
+    target = nav;
+  }
+
+  if (!target) return;
+
+  const btn = document.createElement('button');
+  btn.id = 'theme-toggle-btn';
+  btn.title = 'Toggle theme';
+  btn.type = 'button';
+  btn.className = 'btn btn-sm btn-outline-secondary';
+  btn.style.marginLeft = '8px';
+  btn.innerText = isDarkMode() ? '☀️' : '🌙';
+  btn.style.border = 'none';
+  btn.onclick = function () {
+    toggleDarkMode();
+    btn.innerText = isDarkMode() ? '☀️' : '🌙';
+  };
+
+  // Try to append to the navbar in a way that doesn't break layout
+  // If target is a flex row of nav items, wrap the button in a div
+  const wrapper = document.createElement('div');
+  wrapper.style.display = 'inline-block';
+  wrapper.style.marginLeft = '8px';
+  wrapper.appendChild(btn);
+
+  try {
+    target.appendChild(wrapper);
+  } catch (e) {
+    // if append fails, try inserting at document.body end
+    document.body.appendChild(wrapper);
+  }
+}
+
+// Apply theme on load. Call after DOM ready.
+document.addEventListener('DOMContentLoaded', function () {
+  try {
+    ensureDarkModeStylesheet();
+    applyDarkMode(isDarkMode());
+    injectThemeToggle();
+  } catch (e) {
+    console.error('Theme init error', e);
+  }
+});
+
 function loginBtnClicked(){
     let username = document.getElementById("username-input").value;
     let password = document.getElementById("password-input").value;
@@ -361,7 +454,7 @@ function goToLoggidInUserProfile(){
 }
 
 function postClicked(postId){
-    window.location=`file:///D:/Website%20projects/course/Final%20project/postDetails.html?postId=${postId}`;
+    window.location=`file:///D:/Website%20projects/course/Social-media-website-/postDetails.html?postId=${postId}`;
 }
 
 function addBtnClicked() {

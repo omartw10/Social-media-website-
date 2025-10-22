@@ -1,0 +1,114 @@
+/* Dark mode styles for the site. Applied when <html> or <body> has the .dark-mode class */
+:root {
+  --bg: #0b0f14;
+  --card-bg: #0f1720;
+  --muted: #9aa4b2;
+  --text: #e6eef6;
+  --accent: #4f9fff;
+  --border: rgba(255,255,255,0.06);
+  --shadow: 0 6px 18px rgba(0,0,0,0.6);
+}
+
+/* Apply background when either <html> or <body> has the .dark-mode class.
+   Use selectors with high specificity to override inline styles in existing pages. */
+html.dark-mode body,
+body.dark-mode,
+html.dark-mode,
+body.dark-mode body {
+  background-color: var(--bg) !important;
+  color: var(--text) !important;
+}
+
+/* Make Bootstrap's bg-body-tertiary darker in dark mode */
+.dark-mode .bg-body-tertiary,
+.dark-mode .card,
+.dark-mode .navbar,
+.dark-mode .modal-content {
+  background-color: var(--card-bg) !important;
+  color: var(--text) !important;
+  border-color: var(--border) !important;
+  box-shadow: var(--shadow) !important;
+}
+
+.dark-mode .navbar-brand,
+.dark-mode .nav-link,
+.dark-mode .btn,
+.dark-mode label,
+.dark-mode input,
+.dark-mode textarea,
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode h4,
+.dark-mode h5,
+.dark-mode p {
+  color: var(--text) !important;
+}
+
+.dark-mode .btn-primary {
+  background-color: var(--accent) !important;
+  border-color: transparent !important;
+  color: #03213a !important;
+}
+
+.dark-mode .btn-secondary {
+  background-color: rgba(255,255,255,0.06) !important;
+  color: var(--text) !important;
+  border-color: transparent !important;
+}
+
+.dark-mode .card-header {
+  background: transparent !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+.dark-mode .form-control {
+  background-color: rgba(255,255,255,0.02) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+}
+
+.dark-mode .modal-backdrop.show {
+  background-color: rgba(2,6,23,0.7) !important;
+}
+
+/* Floating buttons */
+.dark-mode #add-btn,
+.dark-mode #scroll-top-btn {
+  background: rgba(255,255,255,0.06) !important;
+  color: var(--text) !important;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.6) !important;
+}
+
+/* Alerts */
+.dark-mode .alert {
+  background-color: rgba(255,255,255,0.04) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+}
+
+/* make images have subtle borders */
+.dark-mode img {
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+/* Tweak tag buttons */
+.dark-mode .btn-sm.rounded-5 {
+  background-color: rgba(255,255,255,0.08) !important;
+  color: var(--text) !important;
+}
+
+/* Comments block overrides: some pages use inline styles (background-color)
+   so target #comments and any elements with id starting with comments to override inline light backgrounds */
+.dark-mode #comments,
+.dark-mode [id^="comments"] {
+  background-color: rgba(255,255,255,0.02) !important;
+  color: var(--text) !important;
+  border: 1px solid rgba(255,255,255,0.03) !important;
+  
+}
+
+.dark-mode #comments hr,
+.dark-mode [id^="comments"] hr {
+  border-top: 1px solid rgba(255,255,255,0.04) !important;
+}
