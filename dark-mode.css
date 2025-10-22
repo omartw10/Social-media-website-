@@ -116,11 +116,25 @@ body.dark-mode body {
 .dark-mode [id^="comments"] {
   background-color: rgba(255,255,255,0.02) !important;
   color: var(--text) !important;
-  border: 1px solid rgba(255,255,255,0.03) !important;
+  border: 1px solid rgba(0, 0, 0, 0) !important;
   
 }
 
 .dark-mode #comments hr,
 .dark-mode [id^="comments"] hr {
   border-top: 1px solid rgba(255,255,255,0.04) !important;
+}
+
+/* Also support comment blocks rendered with a class (postDetails.js uses .comment-block) */
+.dark-mode .comment-block {
+  background-color: rgba(255,255,255,0.02) !important;
+  color: var(--text) !important;
+  border: 1px solid rgba(255,255,255,0.03) !important;
+  box-shadow: none !important;
+}
+.dark-mode .comment-block hr {
+  border-top: 1px solid rgba(255,255,255,0.04) !important;
+}
+.dark-mode .comment-block img {
+  border: 1px solid rgba(255,255,255,0.03) !important;
 }
