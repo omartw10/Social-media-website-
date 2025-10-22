@@ -454,7 +454,8 @@ function goToLoggidInUserProfile(){
 }
 
 function postClicked(postId){
-    window.location=`file:///D:/Website%20projects/course/Social-media-website-/postDetails.html?postId=${postId}`;
+  // use relative navigation so hosting (Netlify) works correctly
+  window.location = `postDetails.html?postId=${postId}`;
 }
 
 function addBtnClicked() {
